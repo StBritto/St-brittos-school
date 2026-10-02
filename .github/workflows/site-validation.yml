@@ -1,0 +1,51 @@
+name: Site Validation
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Validate repository files
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "Checking for unresolved merge markers..."
+          if grep -RInE '^(<<<<<<<|=======|>>>>>>>)' . --exclude-dir=.git --exclude='site-validation.yml'; then
+            echo "Unresolved merge conflict markers found."
+            exit 1
+          fi
+
+          echo "Checking HTML files..."
+          python3 - <<'PY'
+          from pathlib import Path
+          from html.parser import HTMLParser
+
+          class Parser(HTMLParser):
+              pass
+
+          files = list(Path('.').rglob('*.html'))
+          for path in files:
+              if '.git' in path.parts:
+                  continue
+              text = path.read_text(encoding='utf-8', errors='strict')
+              if not text.strip():
+                  raise SystemExit(f'Empty HTML file: {path}')
+              parser = Parser()
+              parser.feed(text)
+              parser.close()
+              print(f'OK: {path}')
+
+          print(f'Validated {len(files)} HTML file(s).')
+          PY
+
+      - name: Validation complete
+        run: echo "Repository validation passed."

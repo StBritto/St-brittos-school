@@ -20,7 +20,7 @@ if ($ExportPassword) {
     exit
 }
 $env:STBRITTOS_KEY_PASSWORD = $password
-$env:GRADLE_USER_HOME = Join-Path $project 'work/gradle-cache'
+if (!$env:GRADLE_USER_HOME) { $env:GRADLE_USER_HOME = Join-Path $project 'work/gradle-cache' }
 $env:ANDROID_USER_HOME = Join-Path $project 'work/android-user'
 try {
     if (!(Test-Path $keyFile)) {

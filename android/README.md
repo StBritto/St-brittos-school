@@ -18,6 +18,8 @@ Run `./Build-Release.ps1` from PowerShell. It generates an upload key only when 
 
 On this PC, `Build-on-this-PC.ps1` configures the installed JDK and a short Java temporary directory. The GitHub workflow explicitly uses `-PunsignedReleaseForVerification` to compile and lint unsigned release artifacts without a private key. Those artifacts must be signed locally before uploading to Play or installing as a release build. The default release command still requires signing configuration.
 
+For the verified GitHub artifact, extract its ZIP and run `./Sign-Verified-Release.ps1 -UnsignedFolder <extracted-folder>` with JDK 17 on PATH. The script signs the AAB locally, aligns and signs the APK, and verifies both signatures. Verify the downloaded artifact's SHA-256 against GitHub's artifact digest before signing; use the artifact from the intended commit, not a different branch. Its default Android build-tools path is `C:/Android/Sdk/build-tools/36.1.0`.
+
 The signed AAB belongs in Google Play Console. The APK is for direct device testing. This project does not upload or publish to Google Play automatically.
 
 ## Signing backup

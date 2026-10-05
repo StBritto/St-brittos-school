@@ -54,7 +54,7 @@ def signingFile = rootProject.file('signing.properties')
 def signingValues = new Properties()
 if (signingFile.exists()) signingFile.withInputStream { signingValues.load(it) }
 def releaseRequested = gradle.startParameter.taskNames.any { it.toLowerCase().contains('release') }
-if (releaseRequested && !signingFile.exists()) throw new GradleException('Release signing is missing. Run Build-Release.ps1 or configure signing.properties locally.')
+if (releaseRequested && !signingFile.exists() && !project.hasProperty('unsignedReleaseForVerification')) throw new GradleException('Release signing is missing. Run Build-Release.ps1 or configure signing.properties locally. CI may explicitly use -PunsignedReleaseForVerification to compile unsigned artifacts only.')
 
 android {
     signingConfigs {

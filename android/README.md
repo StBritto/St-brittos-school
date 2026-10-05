@@ -16,6 +16,8 @@ Install JDK 17 and Android SDK platform 36. Set `JAVA_HOME`, put its `bin` direc
 
 Run `./Build-Release.ps1` from PowerShell. It generates an upload key only when one does not already exist, builds a signed AAB and APK, runs release lint, exports the public certificate, and removes the temporary signing.properties file even on build failure. Reuse the same key for future releases and increase versionCode each time.
 
+On this PC, `Build-on-this-PC.ps1` configures the installed JDK and a short Java temporary directory. The GitHub workflow explicitly uses `-PunsignedReleaseForVerification` to compile and lint unsigned release artifacts without a private key. Those artifacts must be signed locally before uploading to Play or installing as a release build. The default release command still requires signing configuration.
+
 The signed AAB belongs in Google Play Console. The APK is for direct device testing. This project does not upload or publish to Google Play automatically.
 
 ## Signing backup

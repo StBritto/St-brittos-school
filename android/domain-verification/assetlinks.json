@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.robjord.stbrittos",
+      "sha256_cert_fingerprints": [
+        "18:0E:77:0A:3C:A3:5C:5E:F9:5B:B8:7D:67:FC:FD:8A:4E:BD:67:09:E7:5C:BB:FF:94:48:10:8F:EF:91:5E:07"
+      ]
+    }
+  }
+]
